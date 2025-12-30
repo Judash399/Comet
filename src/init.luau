@@ -6,6 +6,7 @@ export type Body = {
     Name: string,
     Parent: Body?, --Not required to be parented.
     Children: {Body},
+    Tags: {string},
     Components: {Component}?,
 }
 
@@ -43,6 +44,9 @@ function Comet.Universe()
     self.Name = "Universe"
 
     self.Children = {}:: {Body}
+    
+
+    self.Tags = {}
 
     self._Bodys = setmetatable({}, {__mode = "v"})
 
@@ -56,6 +60,7 @@ function Comet.Universe()
     function self.Body(self: Universe, props: {
         Name: string?,
         Children: {Body}?,
+        Tag: {string} | string?,
         [number]: any?,
     }): Body
 
@@ -65,6 +70,16 @@ function Comet.Universe()
         body._UniqueID = generateID()
         body._Universe = self
         table.insert(self._Bodys, body)
+        
+        if props.Tag then
+            if type(props.Tag) == "string" then
+                body.Tags = {props.Tag}
+            else
+                body.Tags = props.Tag
+            end
+        else
+            body.Tags = {}
+        end
 
         body.Children = props.Children or {}
 
@@ -114,6 +129,7 @@ function Comet.Universe()
     return self
 end
 
+--Parents a body or list of bodys to the given body.
 function Comet.add(body: Body, ToAdd: {Body} | Body)
     if ToAdd.Type == "Body" then
         table.insert(body.Children, ToAdd)
@@ -124,6 +140,71 @@ function Comet.add(body: Body, ToAdd: {Body} | Body)
       table.insert(body.Children, child)
       child.Parent = body
     end
+end
+
+--Adds the given tags to the body.
+function Comet.Tag(body: Body, ...: {string} | string)
+    local tags = {}
+
+    for _, tag in pairs({...}) do
+        if type(tag) == "string" then
+            table.insert(tags, tag)
+        elseif type(tag) == "table" then
+            for _, innerTag in pairs(tag) do
+                table.insert(tags, innerTag)
+            end
+        end
+    end
+
+    for _, tag in ipairs(tags) do
+        table.insert(body.Tags, tag)
+    end
+end
+
+--Removes the given tags from the body if they exist.
+function Comet.RemoveTag(body: Body, ...: {string} | string)
+    local toRemove = {}
+
+    for _, tag in pairs({...}) do
+        if type(tag) == "string" then
+            table.insert(toRemove, tag)
+        elseif type(tag) == "table" then
+            for _, innerTag in pairs(tag) do
+                table.insert(toRemove, innerTag)
+            end
+        end
+    end
+
+    for _, tag in ipairs(toRemove) do
+        local key = table.find(body.Tags, tag)
+        if type(key) == "number" then
+            table.remove(body.Tags, key)
+        end
+    end
+end
+
+--Returns the list of tags a body has.
+function Comet.GetTags(body: Body): {string}
+    return body.Tags
+end
+
+function Comet.HasTag(body: Body, tag: string): boolean
+    local tags = Comet.GetTags(body)
+
+    return table.find(tags, tag) ~= nil
+end
+
+--Returns a list of bodys that have the passed tag in the given universe.
+function Comet.GetTagged(Universe: Universe, tag: string): (Body)
+    local tagged = {}
+
+    for _, body in pairs(Universe._Bodys) do
+        if Comet.HasTag(body, tag) then
+            table.insert(tagged, body)
+        end
+    end
+
+    return tagged
 end
 
 table.freeze(Comet)
