@@ -1,4 +1,4 @@
-[Comet](assets/FullLogo.svg)
+<img src="assets/FullLogo.svg" width="500">
 
 A lightweight, Luau native component based game engine.
 
@@ -60,4 +60,4 @@ return function(props: {
 end
 ```
 
-Update has to be called manually through: Universe:update(). This is to allow *Comet* to work outside of roblox.
+Update has to be called manually through: `Universe:update(deltaTime)`. This is to allow *Comet* to work outside of roblox.
