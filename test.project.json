@@ -1,0 +1,19 @@
+{
+	"name": "Comet Test",
+	"servePlaceIds": [
+		0
+	],
+	"tree": {
+		"$className": "DataModel",
+		"ReplicatedStorage": {
+			"$className": "ReplicatedStorage",
+			"Comet": {
+				"$path": "default.project.json"
+			}
+		},
+		"ServerScriptService": {
+			"$className": "ServerScriptService",
+			"$path": "test"
+		}
+	}
+}
