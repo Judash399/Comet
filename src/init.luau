@@ -81,10 +81,10 @@ function Comet.Universe()
             body.Tags = {}
         end
 
-        body.Children = props.Children or {}
+        body.Children = {}
 
         for _, child in body.Children do
-            child.Parent = body
+            Comet.Parent(child, body)
         end
 
         body.Parent = nil
@@ -137,8 +137,35 @@ function Comet.add(body: Body, ToAdd: {Body} | Body)
     end
 
     for _, child in pairs(ToAdd) do
-      table.insert(body.Children, child)
-      child.Parent = body
+        Comet.Parent(body, child)
+    end
+end
+
+function Comet.Parent(body: Body, newParent: Body)
+    local pastParent = body.Parent
+    if pastParent ~= nil then
+       table.remove(pastParent.Children, table.find(pastParent.Children, body)) 
+    end
+
+    body.Parent = newParent
+    if newParent ~= nil then
+       table.insert(newParent.Children, body) 
+    end
+end
+
+--Parents a body and its children to nil and emptys the table, allowing it to garbage collect when all strong refrences are lost.
+function Comet.Destroy(body: Body)
+    local toDestroy = Comet.Descendants(body)
+    table.insert(toDestroy, body)
+
+    for _, child in ipairs(toDestroy) do
+       Comet.Parent(child, nil)
+
+        for key, _ in pairs(child) do
+            child[key] = nil
+        end
+
+        table.freeze(child)
     end
 end
 
@@ -157,7 +184,9 @@ function Comet.Tag(body: Body, ...: {string} | string)
     end
 
     for _, tag in ipairs(tags) do
-        table.insert(body.Tags, tag)
+        if not Comet.HasTag(body, tag) then
+            table.insert(body.Tags, tag)
+        end
     end
 end
 
@@ -188,6 +217,7 @@ function Comet.GetTags(body: Body): {string}
     return body.Tags
 end
 
+--Returns a boolean determining if a body has the given tag or not.
 function Comet.HasTag(body: Body, tag: string): boolean
     local tags = Comet.GetTags(body)
 
@@ -205,6 +235,60 @@ function Comet.GetTagged(Universe: Universe, tag: string): (Body)
     end
 
     return tagged
+end
+
+--Returns a list of every component a body has.
+function Comet.GetComponents(body: Body): {Component}
+    return body.Components
+end
+
+--Returns a bodys component if it has it.
+function Comet.GetComponent(body: Body, componentName: string): Component?
+    local components = Comet.GetComponents(body)
+
+    for _, component in pairs(components) do
+        if component.Name == componentName then
+            return component
+        end
+    end
+
+    return nil
+end
+
+--Returns a list of all bodys decending the given body.
+function Comet.Descendants(body: Body): {Body}
+    local descendants = {}
+    local queue = {}
+
+    for _, child in ipairs(body.Children) do
+        table.insert(queue, child)
+    end
+
+    while #queue > 0 do
+        local current = table.remove(queue, 1)
+        table.insert(descendants, current)
+
+        for _, child in ipairs(current.Children) do
+            table.insert(queue, child)
+        end
+    end
+
+    return descendants
+end
+
+--Returns a list of all bodys with the given name decending the given body.
+function Comet.Find(body: Body, name: string)
+    local decendents = Comet.Descendants(body)
+
+    local found = {}
+
+    for _, decendent in ipairs(decendents) do
+        if decendent.Name == name then
+            table.insert(found, decendent)
+        end
+    end
+
+    return found
 end
 
 table.freeze(Comet)
