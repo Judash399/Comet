@@ -1,0 +1,89 @@
+site_name: Comet
+site_url: https://https://judash399.github.io/Comet
+repo_url: https://github.com/Judash399/Comet
+
+theme:
+  logo: assets/icon # This is fine theres logic that makes it work with light and dark mode.
+  favicon: assets/icon-dark.svg
+  name: material
+  custom_dir: docs/assets/overrides
+  palette:
+
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: lucide/sun-moon
+        name: Switch to light mode
+
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: light
+      toggle:
+        icon: lucide/sun
+        name: Switch to dark mode
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: dark
+      toggle:
+        icon: lucide/moon
+        name: Switch to system preference
+  features:
+    - navigation.tabs
+    - navigation.top
+    - navigation.sections
+    - navigation.footer
+    - navigation.indexes
+    - md_in_html
+
+  icon:
+    menu: lucide/menu
+    alternate: lucide/languages
+    search: lucide/search
+    share: lucide/share-2
+    close: lucide/x
+    top: lucide/chevrons-up
+    edit: lucide/pencil
+    view: lucide/telescope
+    repo: lucide/github
+    admonition:
+      note: lucide/pencil
+      abstract: lucide/list-check
+      info: lucide/info
+      tip: lucide/flame
+      success: lucide/party-popper
+      question: lucide/message-circle-question-mark
+      warning: lucide/message-circle-warning
+      failure: lucide/ban
+      danger: lucide/skull
+      bug: lucide/bug
+      example: lucide/book
+      quote: lucide/message-square-quote
+    previous: lucide/move-left
+    next: lucide/move-right
+
+plugins:
+  - search
+
+extra_css:
+  - assets/theme/content.css
+  - assets/theme/404.css
+  - assets/theme/main.css
+  - assets/theme/admonition.css
+  - assets/theme/button.css
+  - assets/theme/palette.css
+  - assets/theme/footer.css
+  - assets/theme/header.css
+  - assets/theme/home.css
+
+markdown_extensions:
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      options:
+        custom_icons:
+          - docs/assets/overrides/.icons
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - attr_list
+  - md_in_html
