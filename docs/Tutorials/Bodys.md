@@ -25,7 +25,8 @@ Comet.add(otherBody, {
     Universe:Body {}
 })
 ```
-The reason you are able to Parent a body to the `Universe` is because it is also is a `Body` object, meaning pretty much all methods that work on bodys will work on the `Universe`.
+!!! info
+    The reason you are able to Parent a body to the `Universe` is because it is also is a `Body` object, meaning pretty much all methods that work on bodys will work on the `Universe`.
 
 ## Names
 You can give a Body a custom name through the `Name` key. For example if your creating a player, you can run this code:
@@ -46,3 +47,14 @@ local player = Universe:Body {
 }
 ```
 To learn more about tags see the tagging tutorial.
+
+## Children
+When defining a `Body`, you can pass a list of children through the Children key. This will then automaticly parent all the children to the `Body`.
+```lua
+local player = Universe:Body {
+    Name = "Player",
+    Children = {
+        Universe:Body {}
+    }
+}
+```
