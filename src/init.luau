@@ -16,6 +16,7 @@ export type Component = {
     Name: string, --Unique Identifier used for certain helper methods.
     Start: (Body) -> ()?,
     Update: (dt: number) -> ()?,
+    Destroy: () -> ()?,
 }
 
 export type SpecialKey = {
@@ -105,9 +106,7 @@ function Comet.Universe()
 
         -- Init Special Keys
         for _, key in ipairs(specialKeys.InitComponents) do
-            local success, result = pcall(function()
-                key.Key.Method(body, key.Value)
-            end)
+            local success, result = SafeCall(key.Key, "Method", body, key.Value)
 
             if success == false then
                 warn(`Error running special key '{key.Key.Name or "UnknownSpecialKey"}' : {result}`)
@@ -184,7 +183,21 @@ function Comet.Destroy(body: Body)
     table.insert(toDestroy, body)
 
     for _, child in ipairs(toDestroy) do
-       Comet.Parent(child, nil)
+        Comet.Parent(nil, child)
+
+        --Run destroy function on components.
+        for _, component in ipairs(child.Components) do
+            local success, result = SafeCall(component, "Destroy")
+
+            if success == false then
+                warn(`Error running Destroy on body '{body.Name or "UnknownBody"}', component '{component.Name or "UnknownComponent"}' : {result}`)
+            end
+        end
+
+        local key = table.find(child._Universe._Bodys, child)
+        if key ~= nil then
+            table.remove(child._Universe._Bodys, key)
+        end
 
         for key, _ in pairs(child) do
             child[key] = nil
