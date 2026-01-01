@@ -5,8 +5,7 @@ export type Body = {
     Type: "Body",
     Name: string,
     Parent: Body?, --Not required to be parented.
-    Children: {Body},
-    Tags: {string},
+    _Children: {Body},
     Components: {Component}?,
 }
 
@@ -17,6 +16,13 @@ export type Component = {
     Name: string, --Unique Identifier used for certain helper methods.
     Start: (Body) -> ()?,
     Update: (dt: number) -> ()?,
+}
+
+export type SpecialKey = {
+    Type: "SpecialKey",
+    Stage: "PreComponents" | "InitComponents" | "PostComponents",
+    Name: string?,
+    Method: (Body, any) -> (),
 }
 
 --Calls a function safely.
@@ -31,22 +37,13 @@ local function SafeCall(tbl: {}, key: any, ...: any)
     return true
 end
 
-local uniqueID = 0
-local function generateID()
-    uniqueID += 1
-    return tostring(uniqueID)
-end
-
 --Creates a new Universe.
 function Comet.Universe()
     local self = {}
 
     self.Name = "Universe"
 
-    self.Children = {}:: {Body}
-    
-
-    self.Tags = {}
+    self._Children = {}:: {Body}
 
     self._Bodys = setmetatable({}, {__mode = "v"})
 
@@ -58,45 +55,46 @@ function Comet.Universe()
     end
 
     function self.Body(self: Universe, props: {
-        Name: string?,
-        Children: {Body}?,
-        Tag: {string} | string?,
-        [number]: any?,
+        any --I'm not aware of a way to be more explicit then this :(
     }): Body
 
         local body = {}
-
-        body.Name = props.Name
-        body._UniqueID = generateID()
         body._Universe = self
         table.insert(self._Bodys, body)
-        
-        if props.Tag then
-            if type(props.Tag) == "string" then
-                body.Tags = {props.Tag}
-            else
-                body.Tags = props.Tag
-            end
-        else
-            body.Tags = {}
-        end
-
-        body.Children = {}
-
-        for _, child in body.Children do
-            Comet.Parent(child, body)
-        end
-
+        body._Children = {}
         body.Parent = nil
 
+        local specialKeys = {
+            PreComponents = {},
+            InitComponents = {},
+            PostComponents = {},
+        }
         local components = {}
 
-        for _, component in ipairs(props) do
-            table.insert(components, component)
+        
+        --Compile Key data from props
+        for key, value in pairs(props) do
+            if type(key) == "number" then
+                table.insert(components, value)
+            elseif type(key) == "table" and key.Type == "SpecialKey" then
+                table.insert(specialKeys[key.Stage], {Key = key, Value = value})
+            end
         end
 
         body.Components = components
 
+        -- Pre Special Keys
+        for _, key in ipairs(specialKeys.PreComponents) do
+            local success, result = pcall(function()
+                key.Key.Method(body, key.Value)
+            end)
+
+            if success == false then
+                warn(`Error running special key '{key.Key.Name or "UnknownSpecialKey"}' : {result}`)
+            end
+        end
+
+        --Run Init function on Components
         for _, component in pairs(body.Components) do
             local success, result = SafeCall(component, "Init", body)
 
@@ -105,6 +103,18 @@ function Comet.Universe()
             end
         end
 
+        -- Init Special Keys
+        for _, key in ipairs(specialKeys.InitComponents) do
+            local success, result = pcall(function()
+                key.Key.Method(body, key.Value)
+            end)
+
+            if success == false then
+                warn(`Error running special key '{key.Key.Name or "UnknownSpecialKey"}' : {result}`)
+            end
+        end
+
+        --Run Start function on Components
         for _, component in pairs(body.Components) do
             local success, result = SafeCall(component, "Start")
 
@@ -123,6 +133,17 @@ function Comet.Universe()
             end
         end
 
+        --Post Special Keys
+        for _, key in ipairs(specialKeys.PostComponents) do
+            local success, result = pcall(function()
+                key.Key.Method(body, key.Value)
+            end)
+
+            if success == false then
+                warn(`Error running special key '{key.Key.Name or "UnknownSpecialKey"}' : {result}`)
+            end
+        end
+
         return body
     end
 
@@ -132,7 +153,7 @@ end
 --Parents a body or list of bodys to the given body.
 function Comet.add(body: Body, ToAdd: {Body} | Body)
     if ToAdd.Type == "Body" then
-        table.insert(body.Children, ToAdd)
+        table.insert(body._Children, ToAdd)
         ToAdd.Parent = body
     end
 
@@ -141,15 +162,19 @@ function Comet.add(body: Body, ToAdd: {Body} | Body)
     end
 end
 
-function Comet.Parent(body: Body, newParent: Body)
+function Comet.Parent(newParent: Body, body: Body)
+    if table.find(Comet.Descendants(body), newParent) then
+        error(`Circular Parenting detected! '{body.Name or "UnkownBody"}' is a decendent of '{newParent.Name or "UnkownBody"}'. Parenting would cause an indefinite loop!`)
+    end
+
     local pastParent = body.Parent
     if pastParent ~= nil then
-       table.remove(pastParent.Children, table.find(pastParent.Children, body)) 
+       table.remove(pastParent._Children, table.find(pastParent._Children, body)) 
     end
 
     body.Parent = newParent
     if newParent ~= nil then
-       table.insert(newParent.Children, body) 
+       table.insert(newParent._Children, body)
     end
 end
 
@@ -167,74 +192,6 @@ function Comet.Destroy(body: Body)
 
         table.freeze(child)
     end
-end
-
---Adds the given tags to the body.
-function Comet.Tag(body: Body, ...: {string} | string)
-    local tags = {}
-
-    for _, tag in pairs({...}) do
-        if type(tag) == "string" then
-            table.insert(tags, tag)
-        elseif type(tag) == "table" then
-            for _, innerTag in pairs(tag) do
-                table.insert(tags, innerTag)
-            end
-        end
-    end
-
-    for _, tag in ipairs(tags) do
-        if not Comet.HasTag(body, tag) then
-            table.insert(body.Tags, tag)
-        end
-    end
-end
-
---Removes the given tags from the body if they exist.
-function Comet.RemoveTag(body: Body, ...: {string} | string)
-    local toRemove = {}
-
-    for _, tag in pairs({...}) do
-        if type(tag) == "string" then
-            table.insert(toRemove, tag)
-        elseif type(tag) == "table" then
-            for _, innerTag in pairs(tag) do
-                table.insert(toRemove, innerTag)
-            end
-        end
-    end
-
-    for _, tag in ipairs(toRemove) do
-        local key = table.find(body.Tags, tag)
-        if type(key) == "number" then
-            table.remove(body.Tags, key)
-        end
-    end
-end
-
---Returns the list of tags a body has.
-function Comet.GetTags(body: Body): {string}
-    return body.Tags
-end
-
---Returns a boolean determining if a body has the given tag or not.
-function Comet.HasTag(body: Body, tag: string): boolean
-    local tags = Comet.GetTags(body)
-
-    return table.find(tags, tag) ~= nil
-end
-
---Returns a list of bodys that have the passed tag in the given universe.
-function Comet.GetTagged(Universe: Universe, tag: string): (Body)
-    local tagged = {}
-
-    for _, body in pairs(Universe._Bodys) do
-        if Comet.HasTag(body, tag) then
-            table.insert(tagged, body)
-        end
-    end
-
-    return tagged
 end
 
 --Returns a list of every component a body has.
@@ -260,7 +217,7 @@ function Comet.Descendants(body: Body): {Body}
     local descendants = {}
     local queue = {}
 
-    for _, child in ipairs(body.Children) do
+    for _, child in ipairs(body._Children) do
         table.insert(queue, child)
     end
 
@@ -268,7 +225,7 @@ function Comet.Descendants(body: Body): {Body}
         local current = table.remove(queue, 1)
         table.insert(descendants, current)
 
-        for _, child in ipairs(current.Children) do
+        for _, child in ipairs(current._Children) do
             table.insert(queue, child)
         end
     end
@@ -290,6 +247,29 @@ function Comet.Find(body: Body, name: string)
 
     return found
 end
+
+--Special Keys
+
+Comet.Name = {
+    Type = "SpecialKey",
+    Stage = "PreComponents",
+    Name = "Name",
+    Method = function(body, input: string)
+        body.Name = input
+    end
+}:: SpecialKey
+
+Comet.Children = {
+    Type = "SpecialKey",
+    Stage = "PreComponents",
+    Name = "Children",
+    Method = function(body, input: {Body})
+        for _, child in ipairs(input) do
+            Comet.Parent(body, child)
+        end
+    end
+}:: SpecialKey
+
 
 table.freeze(Comet)
 return Comet

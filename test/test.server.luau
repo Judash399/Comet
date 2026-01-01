@@ -12,8 +12,13 @@ local Universe = Comet.Universe()
 
 Comet.add(Universe, {
     Universe:Body {
-        Name = "Player",
+        [Comet.Name] = "Player",
         TestComponent(),
+        [Comet.Children] = {
+            Universe:Body {
+                [Comet.Name] = "Test-Object",
+            }
+        }
     }
 })
 
