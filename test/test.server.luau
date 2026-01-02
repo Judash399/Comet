@@ -22,6 +22,8 @@ Comet.add(Universe, {
     }
 })
 
+Comet.Parent(nil, Universe)
+
 print(Universe)
 
 RunService.Heartbeat:Connect(function(dt)

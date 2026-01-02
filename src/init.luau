@@ -42,6 +42,8 @@ end
 function Comet.Universe()
     local self = {}
 
+    self._IsUniverse = true
+
     self.Name = "Universe"
 
     self._Children = {}:: {Body}
@@ -162,6 +164,9 @@ function Comet.add(body: Body, ToAdd: {Body} | Body)
 end
 
 function Comet.Parent(newParent: Body, body: Body)
+    if body._IsUniverse == true then
+        error(`Cannot reparent the Universe!`)
+    end
     if table.find(Comet.Descendants(body), newParent) then
         error(`Circular Parenting detected! '{body.Name or "UnkownBody"}' is a decendent of '{newParent.Name or "UnkownBody"}'. Parenting would cause an indefinite loop!`)
     end
@@ -183,7 +188,10 @@ function Comet.Destroy(body: Body)
     table.insert(toDestroy, body)
 
     for _, child in ipairs(toDestroy) do
-        Comet.Parent(nil, child)
+        --You cannot reparent the Universe, But it can be destroyed.
+        if child._Universe ~= true then
+           Comet.Parent(nil, child) 
+        end
 
         --Run destroy function on components.
         for _, component in ipairs(child.Components) do
