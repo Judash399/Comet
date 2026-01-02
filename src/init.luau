@@ -50,6 +50,8 @@ function Comet.Universe()
 
     self._Bodys = setmetatable({}, {__mode = "v"})
 
+    self._Universe = self
+
     --Calls update on all Bodys that are part of this universe.
     function self.update(self: Universe, dt: number)
         for _, body in pairs(self._Bodys) do
@@ -169,6 +171,9 @@ function Comet.Parent(newParent: Body, body: Body)
     end
     if table.find(Comet.Descendants(body), newParent) then
         error(`Circular Parenting detected! '{body.Name or "UnkownBody"}' is a decendent of '{newParent.Name or "UnkownBody"}'. Parenting would cause an indefinite loop!`)
+    end
+    if body._Universe ~= newParent._Universe then
+        error(`Cannot parent '{body.Name or "UnkownBody"}' to  '{newParent.Name or "UnkownBody"}' because it is part of another Universe!`)
     end
 
     local pastParent = body.Parent
