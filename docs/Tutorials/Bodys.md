@@ -25,36 +25,15 @@ Comet.add(otherBody, {
     Universe:Body {}
 })
 ```
-!!! info
+You could also use the `Comet.Parent()` method to parent a single child, but its recomended to only use `Comet.add()` as its more powerful.
+
+!!! abstract
     The reason you are able to Parent a body to the `Universe` is because it is also is a `Body` object, meaning pretty much all methods that work on bodys will work on the `Universe`.
 
-## Names
-You can give a Body a custom name through the `Name` key. For example if your creating a player, you can run this code:
-```lua
-local player = Universe:Body {
-    Name = "Player",
-}
-```
-## Tag
-You can apply tags to an object through the tag key. It takes either a string or list of strings. For our player example you can do this
-```lua
-local player = Universe:Body {
-    Name = "Player",
-    Tag = {
-        "Entity",
-        "Object",
-    }
-}
-```
-To learn more about tags see the tagging tutorial.
 
-## Children
-When defining a `Body`, you can pass a list of children through the Children key. This will then automaticly parent all the children to the `Body`.
+## Destruction
+Whenever your done with a `Body` you can use the `Destroy()` function attached to *Comet* to destroy it.
 ```lua
-local player = Universe:Body {
-    Name = "Player",
-    Children = {
-        Universe:Body {}
-    }
-}
+Comet.Destroy(body)
 ```
+This will destroy the `Body` and all of its decendents.

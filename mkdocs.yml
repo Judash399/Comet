@@ -87,3 +87,20 @@ markdown_extensions:
   - pymdownx.superfences
   - attr_list
   - md_in_html
+
+nav:
+  - Home: index.md
+  - Tutorials:
+    - Tutorials: Tutorials/index.md
+    - Installation: Tutorials/Installation.md
+    - Universes: Tutorials/Universes.md
+    - Bodys: Tutorials/Bodys.md
+    - SpecialKeys: Tutorials/SpecialKeys.md
+    - Components: Tutorials/Components.md
+    - Managing the Hierarchy: Tutorials/Hierarchy.md
+
+    - Projects:
+      - Projects: Tutorials/Projects/index.md
+      - Project 1 - Tags: Tutorials/Projects/Tags.md
+  - API:
+    - API: API/index.md
