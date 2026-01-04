@@ -11,4 +11,4 @@ With *Comet*, you assemble bodies composed of components into hierarchies that a
 <br><br>
 *Comet* is ready when you are, working in Roblox and beyond.</p>
 
-[Get Started!](Tutorials){ .md-button } [API Refrence](API){ .md-button }
+[Get Started!](Tutorials/index.md){ .md-button } [API Refrence](API/index.md){ .md-button }

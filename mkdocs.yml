@@ -110,3 +110,14 @@ nav:
     - Objects:
       - Body: API/Objects/Body.md
       - Universe: API/Objects/Universe.md
+    - Methods:
+      - Universe: API/Methods/Universe.md
+      - add: API/Methods/add.md
+      - Parent: API/Methods/Parent.md
+      - GetParent: API/Methods/GetParent.md
+      - GetChildren: API/Methods/GetChildren.md
+      - Destroy: API/Methods/Destroy.md
+      - GetComponents: API/Methods/GetComponents.md
+      - GetComponent: API/Methods/GetComponent.md
+      - Descendants: API/Methods/Descendants.md
+      - Find: API/Methods/Find.md

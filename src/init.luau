@@ -168,6 +168,7 @@ function Comet.add(body: Body, ToAdd: {Body} | Body)
     end
 end
 
+--Parents a Body to the given Body.
 function Comet.Parent(newParent: Body, body: Body)
     if body._IsUniverse == true then
         error(`Cannot reparent the Universe!`)
@@ -190,10 +191,12 @@ function Comet.Parent(newParent: Body, body: Body)
     end
 end
 
+--Returns the parent of the given Body.
 function Comet.GetParent(body: Body)
     return body.Parent
 end
 
+--Returns a list of all children parented to the given Body.
 function Comet.GetChildren(body: Body): {Body}
     return body._Children
 end
