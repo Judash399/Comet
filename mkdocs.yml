@@ -1,6 +1,7 @@
 site_name: Comet
-site_url: https://https://judash399.github.io/Comet
+site_url: https://judash399.github.io/Comet
 repo_url: https://github.com/Judash399/Comet
+repo_name: Judash399/Comet
 
 theme:
   logo: assets/icon # This is fine theres logic that makes it work with light and dark mode.
