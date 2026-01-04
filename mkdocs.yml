@@ -104,3 +104,9 @@ nav:
       - Project 1 - Tags: Tutorials/Projects/Tags.md
   - API:
     - API: API/index.md
+    - Types:
+      - Component: API/Types/Component.md
+      - SpecialKey: API/Types/SpecialKey.md
+    - Objects:
+      - Body: API/Objects/Body.md
+      - Universe: API/Objects/Universe.md

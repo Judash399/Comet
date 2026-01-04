@@ -3,9 +3,10 @@ local Comet = {}
 --A object part of a Universe.
 export type Body = {
     Type: "Body",
-    Name: string,
+    Name: string?,
     Parent: Body?, --Not required to be parented.
     _Children: {Body},
+    _Universe: Universe,
     Components: {Component}?,
 }
 
@@ -14,7 +15,8 @@ export type Universe = Body | typeof(Comet.Universe())
 
 export type Component = {
     Name: string, --Unique Identifier used for certain helper methods.
-    Start: (Body) -> ()?,
+    Init: (Body) -> ()?,
+    Start: () -> ()?,
     Update: (dt: number) -> ()?,
     Destroy: () -> ()?,
 }
@@ -64,6 +66,7 @@ function Comet.Universe()
     }): Body
 
         local body = {}
+        body.Type = "Body"
         body._Universe = self
         table.insert(self._Bodys, body)
         body._Children = {}
@@ -185,6 +188,14 @@ function Comet.Parent(newParent: Body, body: Body)
     if newParent ~= nil then
        table.insert(newParent._Children, body)
     end
+end
+
+function Comet.GetParent(body: Body)
+    return body.Parent
+end
+
+function Comet.GetChildren(body: Body): {Body}
+    return body._Children
 end
 
 --Parents a body and its children to nil and emptys the table, allowing it to garbage collect when all strong refrences are lost.
