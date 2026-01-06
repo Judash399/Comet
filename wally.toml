@@ -1,7 +1,12 @@
 [package]
 name = "judash399/comet"
-version = "0.1.0"
+version = "0.1.3"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
+description = "A lightweight, luau native, component based framework."
+homepage = "https://judash399.github.io/Comet/"
+
+exclude = ["**"]
+include = ["src", "src/*", "default.project.json", "wally.lock", "wally.toml"]
 
 [dependencies]
