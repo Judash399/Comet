@@ -1,0 +1,48 @@
+.md-typeset .admonition-title {
+	background: none !important;
+}
+
+.md-typeset .admonition {
+	background: none;
+	border-width: 2px;
+	border-radius: 6px;
+	box-shadow: none;
+}
+
+:root {
+	/* As far as im aware theres no way to just refrence the svg. So both of these is just the svg data from the lucide icon */
+
+	/* check */
+	--md-admonition-icon--do: url('data:image/svg+xml;charset=utf-8, <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M20 6 9 17l-5-5" /> </svg>');
+
+	/* x */
+	--md-admonition-icon--dont: url('data:image/svg+xml;charset=utf-8, <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M18 6 6 18" /> <path d="m6 6 12 12" /> </svg>');
+}
+
+/* Do Admonition */
+
+.md-typeset .admonition.do,
+.md-typeset details.do {
+  border-color: rgb(43, 155, 70);
+}
+
+.md-typeset .do > .admonition-title::before,
+.md-typeset .do > summary::before {
+  background-color: rgb(43, 155, 70);
+  -webkit-mask-image: var(--md-admonition-icon--do);
+          mask-image: var(--md-admonition-icon--do);
+}
+
+/* Don't Admonition */
+
+.md-typeset .admonition.dont,
+.md-typeset details.dont {
+  border-color: rgb(196, 36, 36);
+}
+
+.md-typeset .dont > .admonition-title::before,
+.md-typeset .dont > summary::before {
+  background-color: rgb(196, 36, 36);
+  -webkit-mask-image: var(--md-admonition-icon--dont);
+          mask-image: var(--md-admonition-icon--dont);
+}

@@ -1,0 +1,80 @@
+.md-typeset h1 {
+    font-weight: bolder;
+    color: var(--h1);
+}
+
+.md-typeset h2 {
+    font-weight: bold;
+    color: var(--h2);
+}
+
+.md-typeset h3 {
+    font-weight: normal;
+    color: var(--h3);
+}
+
+/* Prevents MkDocs from filling the icons and styling them weird. */
+.mdc-icon, .md-icon, .md-icon svg {
+    fill: none !important;
+    stroke: currentColor;
+    stroke-width: 2;
+}
+
+.md-typeset .emojione svg, .md-typeset .gemoji svg, .md-typeset .twemoji svg {
+    fill: none !important;
+}
+
+[data-md-color-scheme="dark"] .Only-light {
+    display: none !important;
+}
+
+[data-md-color-scheme="light"] .Only-dark {
+    display: none !important;
+}
+
+.highlighttable tbody {
+    border-radius: 6px;
+    background-color: var(--md-code-bg-color);
+}
+
+.highlighttable .linenos {
+    background: none !important;
+}
+
+.highlighttable .code code {
+    background: none !important;
+}
+
+.highlighttable .filename {
+    background: none !important;
+}
+
+.md-top {
+    box-shadow: none !important;
+    background-color: var(--panel);
+}
+
+.md-top:hover {
+    background-color: var(--panel-hover);
+    color: var(--md-default-fg-color--light)
+}
+
+.md-top:focus {
+    background-color: var(--panel-hover) !important;
+    color: var(--md-default-fg-color--light)
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.admonition-row {
+  display: flex;          /* align children horizontally */
+  gap: 16px;              /* space between admonitions */
+  flex-wrap: wrap;        /* wrap on small screens */
+}
+
+.admonition-row .admonition {
+  flex: 1 1 48%;          /* each takes ~50% width, shrinks if needed */
+  box-sizing: border-box;
+}
