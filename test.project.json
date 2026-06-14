@@ -1,8 +1,5 @@
 {
 	"name": "Comet Test",
-	"servePlaceIds": [
-		0
-	],
 	"tree": {
 		"$className": "DataModel",
 		"ReplicatedStorage": {
