@@ -1,35 +1,24 @@
 --!strict
 
-type Entity = number
+local core = require("@self/core")
+local events = require("@self/events")
+local types = require("@self/types")
 
-type Component<T> = {
-	id: string,
-	data: T,
-}
+type Entity = types.Entity
+type Component<T> = types.Component<T>
 
 local Comet = {}
-
-Comet.Events = {
-	EntityCreated = {} :: { (Entity) -> () },
-}
 
 Comet._Components = {} :: {
 	[string]: { [Entity]: any },
 }
 
-local lastEntityId = 0
 function Comet.Entity(Components: { [number]: Component<any> }): Entity
-	lastEntityId += 1
-
-	local entity = lastEntityId
+	local entity = core.CreateEntity()
 
 	for _, component in pairs(Components) do
 		local componentList = Comet._Components[component.id]
 		componentList[entity] = component.data
-	end
-
-	for _, callback in Comet.Events.EntityCreated do
-		callback(entity)
 	end
 
 	return entity
@@ -61,8 +50,8 @@ local ChildrenList, ChildrenCallback = Comet.CreateComponent<<{ Entity }>>("Chil
 Comet.Children = ChildrenCallback
 
 --Hierarchy Systems
-table.insert(Comet.Events.EntityCreated, function(entity)
-	print(entity)
+core.Events.EntityCreated:Connect(function(entity: number)
+    print(entity)
 end)
 
 table.freeze(Comet)
