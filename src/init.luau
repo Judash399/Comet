@@ -4,21 +4,21 @@ type Entity = number
 
 type Component<T> = {
 	id: string,
-	data: T
+	data: T,
 }
 
 local Comet = {}
 
 Comet.Events = {
-	EntityCreated = {}:: {(Entity) -> ()}
+	EntityCreated = {} :: { (Entity) -> () },
 }
 
-Comet._Components = {}:: {
-	[string]: {[Entity]: any}
+Comet._Components = {} :: {
+	[string]: { [Entity]: any },
 }
 
 local lastEntityId = 0
-function Comet.Entity(Components: {[number]: Component<any>}): Entity
+function Comet.Entity(Components: { [number]: Component<any> }): Entity
 	lastEntityId += 1
 
 	local entity = lastEntityId
@@ -36,28 +36,28 @@ function Comet.Entity(Components: {[number]: Component<any>}): Entity
 end
 
 function Comet.CreateComponent<T>(id: string)
-	local data: {[Entity]: T} = {}
+	local data: { [Entity]: T } = {}
 
 	Comet._Components[id] = data
 
 	return data, function(x: T): Component<T>
 		return {
 			id = id,
-			data = x
+			data = x,
 		}
 	end
 end
 
 function Comet.DestroyEntity(entity: Entity)
 	for _, componentList in pairs(Comet._Components) do
-	    componentList[entity] = nil
+		componentList[entity] = nil
 	end
 end
 
 --Hierarchy Components
 
 Comet.Parent = Comet.CreateComponent("Parent")
-local ChildrenList, ChildrenCallback = Comet.CreateComponent<<{Entity}>>("Children")
+local ChildrenList, ChildrenCallback = Comet.CreateComponent<<{ Entity }>>("Children")
 Comet.Children = ChildrenCallback
 
 --Hierarchy Systems

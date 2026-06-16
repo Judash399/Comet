@@ -8,8 +8,8 @@ local Children = Comet.Children
 
 local testEntity = Entity {
 	Children {
-		Entity {}
-	}
+		Entity {},
+	},
 }
 
 print(Comet)
