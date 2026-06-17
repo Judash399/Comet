@@ -5,31 +5,24 @@ local events = require("@self/events")
 local types = require("@self/types")
 
 type Entity = types.Entity
-type Component<T> = types.Component<T>
+type ComponentData<T> = types.ComponentData<T>
 
 local Comet = {}
 
-Comet._Components = {} :: {
-	[string]: { [Entity]: any },
-}
-
-function Comet.Entity(Components: { [number]: Component<any> }): Entity
+function Comet.Entity(Components: { [number]: ComponentData<any> }): Entity
 	local entity = core.CreateEntity()
 
 	for _, component in pairs(Components) do
-		local componentList = Comet._Components[component.id]
-		componentList[entity] = component.data
+		core.AddComponent(component.id, entity, component.data)
 	end
 
 	return entity
 end
 
 function Comet.CreateComponent<T>(id: string)
-	local data: { [Entity]: T } = {}
+	local componentStorage = core.CreateComponent(id)
 
-	Comet._Components[id] = data
-
-	return data, function(x: T): Component<T>
+	return componentStorage, function(x: T): ComponentData<T>
 		return {
 			id = id,
 			data = x,
@@ -37,22 +30,11 @@ function Comet.CreateComponent<T>(id: string)
 	end
 end
 
-function Comet.DestroyEntity(entity: Entity)
-	for _, componentList in pairs(Comet._Components) do
-		componentList[entity] = nil
-	end
+function Comet.Destroy(entity: Entity)
+	core.DestroyEntity(entity)
 end
 
---Hierarchy Components
-
-Comet.Parent = Comet.CreateComponent("Parent")
-local ChildrenList, ChildrenCallback = Comet.CreateComponent<<{ Entity }>>("Children")
-Comet.Children = ChildrenCallback
-
---Hierarchy Systems
-core.Events.EntityCreated:Connect(function(entity: number)
-    print(entity)
-end)
+Comet.Event = events.createEvent
 
 table.freeze(Comet)
 return Comet

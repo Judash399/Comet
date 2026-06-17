@@ -1,6 +1,8 @@
 export type Entity = number
 
-export type Component<T> = {
+export type Component<T> = { [Entity]: T }
+
+export type ComponentData<T> = {
 	id: string,
 	data: T,
 }
