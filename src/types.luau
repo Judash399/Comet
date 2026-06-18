@@ -7,6 +7,8 @@ export type ComponentData<T> = {
 	data: T,
 }
 
+export type System = (deltaTime: number) -> ()
+
 export type Event<T...> = {
 	Connect: (Event<T...>, (T...) -> ()) -> Connection<T...>,
 	Fire: (Event<T...>, T...) -> (),
