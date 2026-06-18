@@ -1,0 +1,8 @@
+.md-top {
+    border-radius: 0.25rem;
+}
+
+/* Rounded search input for overrides */
+.md-search__input {
+    border-radius: 0.5rem !important;
+}
