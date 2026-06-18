@@ -38,4 +38,4 @@ jobs:
 
       - name: Deploy with Mike
         run: |
-          mike deploy --push 0.2 dev
+          mike deploy --push --force 0.2 dev
