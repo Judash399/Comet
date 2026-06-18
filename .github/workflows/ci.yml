@@ -36,6 +36,10 @@ jobs:
           mv temp-lucide/icons docs/assets/overrides/.icons/lucide
           rm -rf temp-lucide
 
+      - name: Sync gh-pages
+        run: |
+          git fetch origin gh-pages --depth=1 || true
+
       - name: Deploy with Mike
         run: |
-          mike deploy --push --force 0.2 dev
+          mike deploy --push 0.2 dev
