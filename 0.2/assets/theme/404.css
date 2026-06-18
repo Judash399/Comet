@@ -1,0 +1,44 @@
+#theme404 h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+#theme404 h2 {
+    text-align: center;
+    font-size: 1rem;
+    margin-top: 0;
+}
+
+#theme404 .graphic {
+    display: block;
+	width: 10rem;
+	max-width: 80vmin;
+	aspect-ratio: 1;
+	margin: 0 auto;
+	margin-bottom: 2rem;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+[data-md-color-scheme="light"] #theme404 .graphic {
+    background-image: url("../images/ghost-light.svg");
+}
+
+[data-md-color-scheme="dark"] #theme404 .graphic {
+    background-image: url("../images/ghost-dark.svg");
+}
+
+
+/* Ghost animation (makes it bob up and down) */
+
+@keyframes ghost-bob {
+	0% { transform: translateY(0); }
+	50% { transform: translateY(-10px); }
+	100% { transform: translateY(0); }
+}
+
+#theme404 .graphic {
+	will-change: transform;
+	animation: ghost-bob 5s ease-in-out infinite;
+}
