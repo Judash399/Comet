@@ -5,11 +5,11 @@
     --md-typeset-a-color: rgb(100, 139, 238);
     --md-accent-fg-color: rgb(43, 46, 187);
 
-    --md-default-bg-color: rgb(20, 20, 20);
-    --md-typeset-color: rgb(209, 209, 209);
-    --md-default-fg-color: rgb(209, 209, 209);
-    --md-default-fg-color--light: rgb(209, 209, 209);
-    --md-admonition-fg-color: rgb(209, 209, 209);
+    --md-default-bg-color: #060716;
+    --md-typeset-color: #d8deea;
+    --md-default-fg-color: #d8deea;
+    --md-default-fg-color--light: #d8deea;
+    --md-admonition-fg-color: #d8deea;
 
     /* Footer */
     --md-footer-bg-color: var(--md-default-bg-color);
@@ -52,7 +52,7 @@
     --md-primary-fg-color: var(--md-default-bg-color);
     --md-primary-fg-color--dark: var(--md-default-bg-color);
     --md-primary-bg-color: rgb(51, 51, 51);
-    --md-default-bg-color: rgb(241, 241, 241);
+    --md-default-bg-color: #e8e9f9;
 
     /* Footer */
     --md-footer-bg-color: var(--md-default-bg-color);
@@ -60,7 +60,6 @@
     --md-footer-bg-color--dark: var(--md-default-bg-color);
     --md-footer-fg-color--light: rgb(134, 134, 134);
     --md-footer-fg-color--lighter: rgb(172, 172, 172);
-
 
     /* Code */
     --md-code-bg-color: var(--panel);
@@ -80,7 +79,7 @@
     --md-code-hl-color: rgb(29, 110, 181);
     --md-code-hl-color--light: rgb(187, 207, 228);
 
-     /* Custom Values */
+    /* Custom Values */
     --panel: rgb(231, 231, 231);
     --panel-hover: rgb(199, 199, 199);
 }
