@@ -8,3 +8,5 @@
 sourcemap.json
 
 /docs/assets/overrides/.icons/lucide
+
+/.venv

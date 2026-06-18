@@ -9,7 +9,6 @@ theme:
   name: material
   custom_dir: docs/assets/overrides
   palette:
-
     - media: "(prefers-color-scheme)"
       toggle:
         icon: lucide/sun-moon
@@ -45,7 +44,7 @@ theme:
     top: lucide/chevrons-up
     edit: lucide/pencil
     view: lucide/telescope
-    repo: lucide/github
+    repo: material/github
     admonition:
       note: lucide/pencil
       abstract: lucide/list-check
@@ -64,6 +63,9 @@ theme:
 
 plugins:
   - search
+extra:
+  version:
+    provider: mike
 
 extra_css:
   - assets/theme/content.css
@@ -92,33 +94,33 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Tutorials:
-    - Tutorials: Tutorials/index.md
-    - Installation: Tutorials/Installation.md
-    - Universes: Tutorials/Universes.md
-    - Bodys: Tutorials/Bodys.md
-    - SpecialKeys: Tutorials/SpecialKeys.md
-    - Components: Tutorials/Components.md
-    - Managing the Hierarchy: Tutorials/Hierarchy.md
+      - Tutorials: Tutorials/index.md
+      - Installation: Tutorials/Installation.md
+      - Universes: Tutorials/Universes.md
+      - Bodys: Tutorials/Bodys.md
+      - SpecialKeys: Tutorials/SpecialKeys.md
+      - Components: Tutorials/Components.md
+      - Managing the Hierarchy: Tutorials/Hierarchy.md
 
-    - Projects:
-      - Projects: Tutorials/Projects/index.md
-      - Project 1 - Tags: Tutorials/Projects/Tags.md
+      - Projects:
+          - Projects: Tutorials/Projects/index.md
+          - Project 1 - Tags: Tutorials/Projects/Tags.md
   - API:
-    - API: API/index.md
-    - Types:
-      - Component: API/Types/Component.md
-      - SpecialKey: API/Types/SpecialKey.md
-    - Objects:
-      - Body: API/Objects/Body.md
-      - Universe: API/Objects/Universe.md
-    - Methods:
-      - Universe: API/Methods/Universe.md
-      - add: API/Methods/add.md
-      - Parent: API/Methods/Parent.md
-      - GetParent: API/Methods/GetParent.md
-      - GetChildren: API/Methods/GetChildren.md
-      - Destroy: API/Methods/Destroy.md
-      - GetComponents: API/Methods/GetComponents.md
-      - GetComponent: API/Methods/GetComponent.md
-      - Descendants: API/Methods/Descendants.md
-      - Find: API/Methods/Find.md
+      - API: API/index.md
+      - Types:
+          - Component: API/Types/Component.md
+          - SpecialKey: API/Types/SpecialKey.md
+      - Objects:
+          - Body: API/Objects/Body.md
+          - Universe: API/Objects/Universe.md
+      - Methods:
+          - Universe: API/Methods/Universe.md
+          - add: API/Methods/add.md
+          - Parent: API/Methods/Parent.md
+          - GetParent: API/Methods/GetParent.md
+          - GetChildren: API/Methods/GetChildren.md
+          - Destroy: API/Methods/Destroy.md
+          - GetComponents: API/Methods/GetComponents.md
+          - GetComponent: API/Methods/GetComponent.md
+          - Descendants: API/Methods/Descendants.md
+          - Find: API/Methods/Find.md
