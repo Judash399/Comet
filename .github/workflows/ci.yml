@@ -38,6 +38,6 @@ jobs:
 
       - name: Deploy with Mike
         run: |
-          mike deploy --push 0.2 dev
-          mike deploy --push 0.1 stable
+          mike deploy --push --force 0.2 dev
+          mike deploy --push --force 0.1 stable
           mike set-default --push stable
