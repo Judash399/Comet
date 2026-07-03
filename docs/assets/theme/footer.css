@@ -1,3 +1,7 @@
 .md-footer__inner.md-grid {
-    max-width: calc(61rem - ( 12.1rem  * 2));
+	max-width: calc(61rem - (12.1rem * 2));
+}
+
+.md-copyright::after {
+	content: "- Theme by Judash399";
 }
