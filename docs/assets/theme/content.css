@@ -25,6 +25,7 @@
 .md-icon svg {
 	width: 24px;
 	height: 24px;
+	fill: none;
 }
 
 .md-typeset .emojione svg,
