@@ -36,36 +36,33 @@ theme:
     - md_in_html
 
   icon:
-    menu: lucide/menu
+    menu: slumber/menu
     alternate: lucide/languages
-    search: lucide/search
-    share: lucide/share-2
-    close: lucide/x
-    top: lucide/chevrons-up
-    edit: lucide/pencil
-    view: lucide/telescope
+    search: slumber/search
+    share: slumber/users
+    close: slumber/close
+    top: slumber/arrow-up
+    edit: slumber/edit
+    view: slumber/eye
     repo: material/github
     admonition:
-      note: lucide/pencil
-      abstract: lucide/list-check
-      info: lucide/info
-      tip: lucide/flame
+      note: slumber/edit
+      abstract: slumber/file-edit
+      info: slumber/info
+      tip: slumber/check-circle
       success: lucide/party-popper
       question: lucide/message-circle-question-mark
-      warning: lucide/message-circle-warning
+      warning: slumber/warning
       failure: lucide/ban
       danger: lucide/skull
       bug: lucide/bug
       example: lucide/book
       quote: lucide/message-square-quote
-    previous: lucide/move-left
-    next: lucide/move-right
+    previous: slumber/arrow-left
+    next: slumber/arrow-right
 
 plugins:
   - search
-extra:
-  version:
-    provider: mike
 
 extra_css:
   - assets/theme/content.css

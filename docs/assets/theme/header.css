@@ -1,13 +1,23 @@
 .md-header {
-	box-shadow:
-		0 0 0.35rem .5rem var(--md-primary-fg-color) !important;
+	background-color: color-mix(
+		in srgb,
+		var(--md-default-bg-color) 75%,
+		transparent
+	);
+	backdrop-filter: blur(5rem);
+	box-shadow: none !important;
+	border-bottom: none;
+}
+
+.md-header--shadow {
+	border-bottom: 1px solid var(--header-line);
 }
 
 .md-search__form {
-    background-color: var(--panel) !important;
-    border-radius: 6px !important;
+	background-color: var(--panel) !important;
+	border-radius: 6px !important;
 }
 
 .md-search__input::placeholder {
-    color: var(--md-primary-bg-color) !important;
+	color: var(--md-primary-bg-color) !important;
 }

@@ -9,6 +9,11 @@
 	box-shadow: none;
 }
 
+.md-typeset .admonition-title:before, .md-typeset summary:before {
+	width: 24px !important;
+	height: 24px !important;
+}
+
 :root {
 	/* As far as im aware theres no way to just refrence the svg. So both of these is just the svg data from the lucide icon */
 
